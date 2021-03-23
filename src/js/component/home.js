@@ -8,6 +8,7 @@ export function Home() {
 	const [tareas, setTareas] = useState("");
 	const [lista, setLista] = useState([]);
 	var url = "https://assets.breatheco.de/apis/fake/todos/user/Mvargas";
+
 	const loadTodo = () => {
 		fetch(url, {
 			method: "GET",
@@ -20,10 +21,11 @@ export function Home() {
 			})
 			.catch(error => console.error("Error:", error.message));
 	};
-	const updateTodo = lista => {
+	const updateTodo = () => {
+		let arrayVacio = [];
 		fetch(url, {
 			method: "PUT",
-			body: JSON.stringify(lista),
+			body: JSON.stringify(arrayVacio),
 			headers: { "Content-Type": "application/json" }
 		})
 			.then(res => res.json())
@@ -33,6 +35,35 @@ export function Home() {
 			})
 			.catch(error => console.error("Error:", error.message));
 	};
+	const nuevoTodo = () => {
+		let array = [];
+		fetch(url, {
+			method: "POST",
+			body: JSON.stringify(array), //se envia un arreglo vacio
+			headers: { "Content-Type": "application/json" }
+		})
+			.then(res => res.json())
+			.then(data => {
+				//console.log("newToDo", data);
+				loadTodo();
+			}) //cargando la
+			.catch(error => console.error("Error:", error))
+			.then(response => console.log("Success:", response));
+	};
+	const deleteTodo = () => {
+		fetch(url, {
+			method: "DELETE",
+			headers: { "Content-Type": "application/json" }
+		})
+			.then(res => res.json())
+			.then(data => {
+				//console.log("updateTodo", data);
+				nuevoTodo();
+			}) //cargando la
+			.catch(error => console.error("Error:", error))
+			.then(response => console.log("Success:", response));
+	};
+
 	useEffect(() => {
 		loadTodo();
 	}, []);
@@ -75,11 +106,29 @@ export function Home() {
 						);
 				  })}
 			<button
+				type="button"
+				className="btn btn-outline-primary"
 				onClick={() => {
 					updateTodo(lista);
 				}}>
 				{" "}
 				Actualizar Lista
+			</button>
+			<button
+				type="button"
+				className="btn btn-outline-primary"
+				onClick={() => {
+					nuevoTodo();
+				}}>
+				Nuevo
+			</button>
+			<button
+				type="button"
+				className="btn btn-outline-primary"
+				onClick={() => {
+					deleteTodo();
+				}}>
+				DELETE
 			</button>
 		</div>
 	);
