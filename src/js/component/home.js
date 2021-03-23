@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 //include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
 export function Home() {
 	const [tareas, setTareas] = useState("");
 	const [lista, setLista] = useState([]);
-	var url = "https://assets.breatheco.de/apis/fake/todos/user/Mvargas";
+	let url = "https://assets.breatheco.de/apis/fake/todos/user/Mvargas";
 
 	const loadTodo = () => {
 		fetch(url, {
@@ -21,11 +20,10 @@ export function Home() {
 			})
 			.catch(error => console.error("Error:", error.message));
 	};
-	const updateTodo = () => {
-		let arrayVacio = [];
+	const updateTodo = NewTodo => {
 		fetch(url, {
 			method: "PUT",
-			body: JSON.stringify(arrayVacio),
+			body: JSON.stringify(NewTodo),
 			headers: { "Content-Type": "application/json" }
 		})
 			.then(res => res.json())
